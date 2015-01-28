@@ -1,7 +1,6 @@
 package com.solution;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -16,7 +15,6 @@ import java.util.Scanner;
 public class Solution {
 
 	private static final long MAX_POSSIBLE_NUMBER = 4294967295L;
-	private static final String OUTPUT_FILE_NAME = "output.txt";
 	private static final String COMMA = ",";
 
 	public static void main(String[] args) {
@@ -26,7 +24,6 @@ public class Solution {
 		FileInputStream fis = null;
 		Scanner input = null;
 
-		FileOutputStream fos = null;
 		PrintStream ps = null;
 
 		if(args.length == 0)
@@ -38,7 +35,6 @@ public class Solution {
 			fis = new FileInputStream(inputFileName);
 			input = new Scanner(fis);
 
-			fos = new FileOutputStream(OUTPUT_FILE_NAME);
 			ps = System.out;
 
 			while(input.hasNextLong()){
@@ -70,18 +66,6 @@ public class Solution {
 			if(fis != null){
 				try {
 					fis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-			if(ps != null){
-				ps.close();
-			}
-
-			if(fos != null){
-				try {
-					fos.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
