@@ -14,6 +14,8 @@ public interface BooleanStorage {
 
 		public void init(long limit) throws IOException;
 
+		public long getLimit();
+
 		public void write(long position, boolean value) throws IOException;
 
 		public boolean read(long position) throws IOException;

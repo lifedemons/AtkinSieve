@@ -13,6 +13,7 @@ import java.io.IOException;
  */
 public class IntegerArrayBooleanStorage implements BooleanStorage {
 
+	private static final String LOG_MESSAGE_POSITION_OUT_OF_RANGE = "Value of \'position\' argument has to be in range [0..";
 	private static final int INT_AVAILABLE_BITS = 31;
 	private int[] storage;
 	private long limit;
@@ -46,6 +47,10 @@ public class IntegerArrayBooleanStorage implements BooleanStorage {
 
 	@Override
 	public void write(long position, boolean value) throws IOException {
+
+		if((position < 0) || (position > limit))
+			throw new IllegalArgumentException(LOG_MESSAGE_POSITION_OUT_OF_RANGE+limit+"]");
+		
 		int cellPosition = (int)(position/INT_AVAILABLE_BITS);
 		int relativeCell = (int)(position % INT_AVAILABLE_BITS);
 
@@ -57,6 +62,10 @@ public class IntegerArrayBooleanStorage implements BooleanStorage {
 
 	@Override
 	public boolean read(long position) throws IOException {
+
+		if((position < 0) || (position > limit))
+			throw new IllegalArgumentException(LOG_MESSAGE_POSITION_OUT_OF_RANGE+limit+"]");
+
 		int cellPosition = (int)(position/INT_AVAILABLE_BITS);
 		int relativeCell = (int)(position % INT_AVAILABLE_BITS);
 
@@ -70,6 +79,11 @@ public class IntegerArrayBooleanStorage implements BooleanStorage {
 		storage = null;
 
 		return true;
+	}
+
+	@Override
+	public long getLimit() {
+		return limit;
 	}
 
 }

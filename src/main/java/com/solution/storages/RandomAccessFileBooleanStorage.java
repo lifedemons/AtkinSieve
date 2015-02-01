@@ -12,9 +12,12 @@ import java.io.RandomAccessFile;
  *
  */
 public class RandomAccessFileBooleanStorage implements BooleanStorage{
+
+	private static final String LOG_MESSAGE_POSITION_OUT_OF_RANGE = "Value of \'position\' argument has to be in range [0..";
 	private static final String BOOLEAN_STORAGE_FILE_NAME = "booleanStorage.txt";
 	private final RandomAccessFile rafStorage;
 	private File storageFile;
+	private long limit;
 
 	public RandomAccessFileBooleanStorage() throws FileNotFoundException, IOException {
 		super();
@@ -25,19 +28,31 @@ public class RandomAccessFileBooleanStorage implements BooleanStorage{
 
 	@Override
 	public void init(long limit) throws IOException {
+		this.limit = limit;
 		rafStorage.setLength(limit);
 	}
 
+	@Override
 	public void write(long position, boolean value) throws IOException{
+
+		if((position < 0) || (position > limit))
+			throw new IllegalArgumentException(LOG_MESSAGE_POSITION_OUT_OF_RANGE+limit+"]");
+
 		rafStorage.seek(position);
 		rafStorage.writeBoolean(value);
 	}
 
+	@Override
 	public boolean read(long position) throws IOException{
+
+		if((position < 0) || (position > limit))
+			throw new IllegalArgumentException(LOG_MESSAGE_POSITION_OUT_OF_RANGE+limit+"]");
+
 		rafStorage.seek(position);
 		return rafStorage.readBoolean();
 	}
 
+	@Override
 	public boolean clean(){
 
 		boolean deletionResult = false;
@@ -50,6 +65,11 @@ public class RandomAccessFileBooleanStorage implements BooleanStorage{
 		}
 
 		return deletionResult;
+	}
+
+	@Override
+	public long getLimit() {
+		return limit;
 	}
 
 }
